@@ -1,7 +1,6 @@
 from kani import Kani, chat_in_terminal
 from kani.engines.openai import OpenAIEngine
 import gradio as gr
-#api_key = "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"
 import openai
 import asyncio
 from kani import ChatMessage
