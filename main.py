@@ -19,8 +19,7 @@ async def cpAssistantModel(transcript):
             Based on that input, you will try to understand the user's intention and confirm that with \
             the user by asking. If the user says 'n', that means your original suggestion is wrong, and \
             you will make another suggestion; keep doing this until the user says 'y'. \
-            If the user says 'y', rephrase the user's intent in first-person as the message the user wants to tell the caregiver. \
-            Then, check if this intent is specific enough for the caregiver to take action; if not, keep following up \
+            If the user says 'y', check if this intent is specific enough for the caregiver to take action; if not, keep following up \
             in the form more specific suggestions, and confirming with the user in the way as mentioned earlier. \
             At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver."),
 
