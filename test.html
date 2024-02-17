@@ -42,7 +42,7 @@
 
         .message-container {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             margin-bottom: 10px;
         }
 
@@ -55,6 +55,7 @@
             word-wrap: break-word;
             position: relative;
             display: flex;
+            align-items: center;
         }
 
         .user-message::before,
@@ -75,7 +76,7 @@
         .bot-message::before {
             background: url('robot_logo.png') center/cover;
             /* Replace with actual bot logo URL */
-            order: 1;
+            /* No order property needed for left-side positioning */
         }
 
         .user-message {
@@ -87,6 +88,8 @@
         .bot-message {
             background-color: #E0E0E0;
             color: #000;
+            /* Ensure the bot-message aligns items to start for left-side icon */
+            align-items: flex-start;
         }
 
         .input-container {
