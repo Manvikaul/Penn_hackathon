@@ -322,10 +322,11 @@
                 },
                 body: JSON.stringify({ message: userInput }),
             })
-                .then(response => {
+                .then(response => response.json())  // Convert response to JSON
+                .then(data => {
                     // Display bot response
-                    print(response)
-                    displayBotMessage(response.result);
+                    console.log(data);
+                    displayBotMessage(data.result);
                 })
                 .catch(error => console.error('Error:', error));
         }
