@@ -42,7 +42,6 @@
 
         .message-container {
             display: flex;
-            flex-direction: column;
             align-items: flex-end;
             margin-bottom: 10px;
         }
@@ -55,6 +54,7 @@
             max-width: 70%;
             word-wrap: break-word;
             position: relative;
+            display: flex;
         }
 
         .user-message::before,
@@ -63,29 +63,30 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            margin: 0 10px;
         }
 
         .user-message::before {
             background: url('human_logo.png') center/cover;
-            /* Replace with actual human logo URL */
-            right: -15px;
-
+            /* Replace with actual user logo URL */
+            order: 2;
         }
 
         .bot-message::before {
             background: url('robot_logo.png') center/cover;
-            /* Replace with actual robot logo URL */
-            left: -10px;
+            /* Replace with actual bot logo URL */
+            order: 1;
+        }
 
+        .user-message {
+            background-color: #DCF8C6;
+            color: #000;
+            margin-left: auto;
         }
 
         .bot-message {
             background-color: #E0E0E0;
             color: #000;
-            align-self: flex-start;
         }
 
         .input-container {
