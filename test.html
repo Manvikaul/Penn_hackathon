@@ -191,13 +191,13 @@
         }
 
         .user-message::before {
-            background: url('human_logo.png') center/cover;
+            background: url('static/images/human_logo.png') center/cover;
             /* Replace with actual user logo URL */
             order: 2;
         }
 
         .bot-message::before {
-            background: url('robot_logo.png') center/cover;
+            background: url('static/images/robot_logo.png') center/cover;
             /* Replace with actual bot logo URL */
             /* No order property needed for left-side positioning */
         }
@@ -315,17 +315,17 @@
             displayUserMessage(userInput);
 
             // Make AJAX request to Flask server
-            fetch('/api/send_message', {
+            fetch('/api/main', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ message: userInput }),
             })
-                .then(response => response.json())
-                .then(data => {
+                .then(response => {
                     // Display bot response
-                    displayBotMessage(data.response);
+                    console.log(response)
+                    displayBotMessage(response.result);
                 })
                 .catch(error => console.error('Error:', error));
         }
