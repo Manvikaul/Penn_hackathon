@@ -15,7 +15,7 @@ async def cpAssistantModel(transcript):
     fewshot = [
         ChatMessage.system("You are helping the caregiver of a cerebral palsy patient understand \
             what the cerebral palsy patient is trying to say. You will typically receive under 3 words, \
-            and the input maybe misspelt or incomplete. \
+            and the input maybe misspelt or incomplete; it might also be badly transcribed from audio.\
             Based on that input, you will try to understand the user's intention and confirm that with \
             the user by asking. If the user says no or 'n', that means your original suggestion is wrong, and \
             you will make another suggestion; keep doing this until the user says yes or 'y'. \
@@ -81,8 +81,9 @@ def main():
         asyncio.run(cpAssistantModel(transcript))
 
     elif user_choice == '2':
-        audio_file_path = "cpAudio.mp3"
+        audio_file_path = input("audio file: ")
         transcript = process_audio(audio_file_path)
+        print("transcript: ", transcript)
         asyncio.run(cpAssistantModel(transcript))
     else:
         print("Invalid choice. Please enter '1' or '2'.")
