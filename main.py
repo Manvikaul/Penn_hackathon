@@ -82,6 +82,7 @@ def process_audio(file_path):
 def main():
     data = request.json
     transcript = data.get("message", "")
+    print(transcript)
     result = asyncio.run(cpAssistantModel(transcript))
     # elif user_choice == "2":
     #     audio_file_path = data.get("audio_file_path", "")
@@ -90,8 +91,8 @@ def main():
     #     asyncio.run(cpAssistantModel(transcript))
     # else:
     #     return jsonify({"error": "Invalid choice. Please enter '1' or '2'."})
-
-    return jsonify({"result": result})
-
+    print(type(result))
+    print(result.content)
+    return jsonify({"result": result.content})
 if __name__ == "__main__":
     app.run(debug=True, port=2450)
