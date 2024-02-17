@@ -7,23 +7,25 @@ import asyncio
 from kani import ChatMessage
 from dotenv import load_dotenv
 import os 
+from flask_cors import CORS
 
 load_dotenv()
 my_key = os.getenv("OPENAI_API_KEY")
 engine = OpenAIEngine(my_key, model="gpt-4")
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("test.html")
 
-@app.route("/api/send_message", methods=["POST"])
-def send_message():
-    data = request.json
-    transcript = data.get("transcript", "")
-    result = asyncio.run(cpAssistantModel(transcript))
-    return jsonify({"result": result})
+# @app.route("/api/send_message", methods=["POST"])
+# def send_message():
+#     data = request.json
+#     transcript = data.get("transcript", "")
+#     result = asyncio.run(cpAssistantModel(transcript))
+#     return jsonify({"result": result})
 
 
 async def cpAssistantModel(transcript):
@@ -36,10 +38,7 @@ async def cpAssistantModel(transcript):
             you will make another suggestion; keep doing this until the user says yes or 'y'. \
             If the user says yes or 'y', check if this intent is specific enough for the caregiver to take action; if not, keep following up \
             in the form more specific suggestions, and confirming with the user in the way as mentioned earlier. \
-            At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver. \
-            If you have trouble understanding the user's intent, try to ask them if the words you received is \
-            what they are trying to say, e.g. 'Are you trying to say walk?'; if not, make guesses with words with \
-            similar pronunciations."),
+            At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver."),
 
         ChatMessage.user("walk"),
         ChatMessage.assistant("Do you need help walking to the door?"),
@@ -70,20 +69,8 @@ async def cpAssistantModel(transcript):
     ]
 
     ai = Kani(engine, chat_history=fewshot)
-    counter = 0
-    while True:
-        user_input = ""
-        if counter != 0:
-            user_input = input("Your input: ")
-            counter +=1
-        if user_input.lower() == "quit":
-            break
-        if counter == 0:
-            user_input = transcript
-            counter +=1    
-  
-        response = await ai.chat_round_str(user_input)
-        print("AI:", response)
+    response = await ai.chat_round(transcript)
+    return response
 
 def process_audio(file_path):
     audio = open(file_path, "rb")
@@ -94,19 +81,17 @@ def process_audio(file_path):
 @app.route("/api/main", methods=["POST"])
 def main():
     data = request.json
-    user_choice = data.get("choice", "")
-    if user_choice == "1":
-        transcript = data.get("transcript", "")
-        asyncio.run(cpAssistantModel(transcript))
-    elif user_choice == "2":
-        audio_file_path = data.get("audio_file_path", "")
-        transcript = process_audio(audio_file_path)
-        print("transcript: ", transcript)
-        asyncio.run(cpAssistantModel(transcript))
-    else:
-        return jsonify({"error": "Invalid choice. Please enter '1' or '2'."})
+    transcript = data.get("message", "")
+    result = asyncio.run(cpAssistantModel(transcript))
+    # elif user_choice == "2":
+    #     audio_file_path = data.get("audio_file_path", "")
+    #     transcript = process_audio(audio_file_path)
+    #     print("transcript: ", transcript)
+    #     asyncio.run(cpAssistantModel(transcript))
+    # else:
+    #     return jsonify({"error": "Invalid choice. Please enter '1' or '2'."})
 
-    return jsonify({"success": True})
+    return jsonify({"result": result})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=2450)
