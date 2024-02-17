@@ -1,6 +1,6 @@
 from kani import Kani, chat_in_terminal
 from kani.engines.openai import OpenAIEngine
-api_key = "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"
+api_key = "sk-"
 engine = OpenAIEngine(api_key, model="gpt-3.5-turbo")
 from kani import ChatMessage
 
