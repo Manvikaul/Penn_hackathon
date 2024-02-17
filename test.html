@@ -3,21 +3,144 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
+    <title>Monograph Communications</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        * {
+            box-sizing: border-box;
+        }
+
+        body,
+        h1,
+        p {
             margin: 0;
             padding: 0;
-            background-color: #f3f3f3;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #FFB6B9 0%, #FAE3D9 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        .header-line,
+        .footer-line {
+            height: 1px;
+            background-color: #2C2323;
+        }
+
+        h1 {
+            font-size: 72px;
+            font-weight: bold;
+            color: #2C2323;
+            line-height: 1.2;
+            position: relative;
+            padding-bottom: 20px;
+            /* Spacing for the underline */
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 80%;
+            /* adjust the width as per design */
+            height: 1px;
+            background-color: #2C2323;
+        }
+
+        p {
+            font-size: 24px;
+            color: #2C2323;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            position: relative;
+            padding-right: 20px;
+            /* Spacing for the vertical line */
+        }
+
+        p::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 1px;
+            height: 80%;
+            /* Adjust the height as per design */
+            background-color: #2C2323;
+            transform: translateY(-50%);
+        }
+
+        /* .mailing-list {
+            display: flex;
+            margin-bottom: 40px;
+        } */
+
+        .mailing-list input {
+            flex: 1;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: 2px solid #2C2323;
+            margin-right: -40px;
+            /* Adjusted for overlapping button */
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+            border-right: none;
+        }
+
+        .mailing-list button {
+            background-color: #2C2323;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .about-link {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            width: max-content;
+            /* Adjusted for proper alignment */
+        }
+
+        .about-link span {
+            font-size: 18px;
+            color: #2C2323;
+        }
+
+        .about-link:after {
+            content: '→';
+            color: #2C2323;
+            font-size: 18px;
+            margin-left: 10px;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content>div {
+            width: 50%;
+        }
+
+        .right-content {
+            text-align: right;
         }
 
         .chat-container {
             max-width: 700px;
             margin: 50px auto;
-            background-color: #fff;
+            /* Remove background-color property */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
@@ -26,7 +149,7 @@
         }
 
         .chat-header {
-            background-color: #4CAF50;
+            /* Remove background-color property */
             color: #fff;
             padding: 15px;
             text-align: center;
@@ -48,7 +171,7 @@
 
         .user-message,
         .bot-message {
-            background-color: #DCF8C6;
+            /* Remove background-color property */
             padding: 10px;
             border-radius: 8px;
             max-width: 70%;
@@ -80,13 +203,13 @@
         }
 
         .user-message {
-            background-color: #DCF8C6;
+            /* Remove background-color property */
             color: #000;
             margin-left: auto;
         }
 
         .bot-message {
-            background-color: #E0E0E0;
+            /* Remove background-color property */
             color: #000;
             /* Ensure the bot-message aligns items to start for left-side icon */
             align-items: flex-start;
@@ -107,7 +230,17 @@
         }
 
         .send-button {
-            background-color: #4CAF50;
+            background-color: #0a0a0a;
+            color: #fff;
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .audio-button {
+            background-color: #0a0a0a;
             color: #fff;
             padding: 10px 15px;
             border: none;
@@ -127,32 +260,52 @@
         }
 
         .red-button {
-            background-color: #FF4D4D;
+            background-color: #040003;
             color: #fff;
             margin-right: 10px;
         }
 
         .green-button {
-            background-color: #4CAF50;
-            color: #fff;
+            background-color: #f7f9f7;
+            color: #060000;
             margin-left: 10px;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="chat-container">
-        <div class="chat-header">Chatbot</div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <div class="input-container">
-            <div class="red-button">&#10006;</div>
-            <input type="text" class="user-input" id="user-input" placeholder="Type your message...">
-            <button class="send-button" onclick="sendMessage()">Send</button>
-            <div class="green-button">&#10004;</div>
+    <div class="header-line"></div>
+    <header>
+        <h1>Plain language, <br>Extraordinary results</h1>
+    </header>
+    <div class="content">
+        <div class="left-content">
+            <!-- <p>We specialize in creative, clear, and cohesive communications solutions that build memorable experiences. -->
+            <!-- </p> -->
+            <div class="chat-container">
+                <div class="chat-header">Let's chat!</div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="input-container">
+                    <div class="red-button">&#10006;</div>
+                    <input type="text" class="user-input" id="user-input" placeholder="Type your message...">
+                    <button class="send-button" onclick="sendMessage()">Send</button>
+                    <button class="audio-button" onclick="audioInput()">Record</button>
+                    <div class="green-button">&#10004;</div>
+                </div>
+            </div>
+            <!-- <div class="mailing-list">
+                <input type="text" placeholder="Your email">
+                <button>→</button>
+            </div> -->
+            <div class="about-link">
+                <span>About Us</span>
+            </div>
+        </div>
+        <div class="right-content">
+            <p>Monograph Communications was built on the belief that simple can be extraordinary.</p>
         </div>
     </div>
-
+    <div class="footer-line"></div>
     <script>
         function sendMessage() {
             const userInput = document.getElementById('user-input').value;
@@ -161,11 +314,20 @@
             // Display user message
             displayUserMessage(userInput);
 
-            // Simulate sending message to Python backend (replace with actual API call)
-            setTimeout(() => {
-                const botResponse = "This is a sample bot response. Replace it with an actual ML backend response.";
-                displayBotMessage(botResponse);
-            }, 500);
+            // Make AJAX request to Flask server
+            fetch('/api/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userInput }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display bot response
+                    displayBotMessage(data.response);
+                })
+                .catch(error => console.error('Error:', error));
         }
 
         function displayUserMessage(message) {
@@ -181,6 +343,11 @@
             const botMessage = `<div class="message-container"><div class="bot-message">${message}</div></div>`;
             chatMessages.innerHTML += botMessage;
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function audioInput() {
+            // Add your audio input logic here
+            console.log('Audio input logic');
         }
     </script>
 

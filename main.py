@@ -1,3 +1,4 @@
+from flask import Flask, render_template, jsonify, request
 from kani import Kani, chat_in_terminal
 from kani.engines.openai import OpenAIEngine
 import gradio as gr
@@ -10,6 +11,20 @@ import os
 load_dotenv()
 my_key = os.getenv("OPENAI_API_KEY")
 engine = OpenAIEngine(my_key, model="gpt-4")
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/api/send_message", methods=["POST"])
+def send_message():
+    data = request.json
+    transcript = data.get("transcript", "")
+    result = asyncio.run(cpAssistantModel(transcript))
+    return jsonify({"result": result})
+
 
 async def cpAssistantModel(transcript):
     fewshot = [
@@ -73,20 +88,22 @@ def process_audio(file_path):
     transcript = openai.audio.transcriptions.create(model="whisper-1", file=audio, response_format='text')
     return transcript
 
+@app.route("/api/main", methods=["POST"])
 def main():
-    user_choice = input("Enter '1' to provide transcript via chat terminal or '2' to provide an audio file: ")
-
-    if user_choice == '1':
-        transcript = input("Enter the transcript: ")
+    data = request.json
+    user_choice = data.get("choice", "")
+    if user_choice == "1":
+        transcript = data.get("transcript", "")
         asyncio.run(cpAssistantModel(transcript))
-
-    elif user_choice == '2':
-        audio_file_path = input("audio file: ")
+    elif user_choice == "2":
+        audio_file_path = data.get("audio_file_path", "")
         transcript = process_audio(audio_file_path)
         print("transcript: ", transcript)
         asyncio.run(cpAssistantModel(transcript))
     else:
-        print("Invalid choice. Please enter '1' or '2'.")
+        return jsonify({"error": "Invalid choice. Please enter '1' or '2'."})
+
+    return jsonify({"success": True})
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
