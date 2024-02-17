@@ -21,7 +21,10 @@ async def cpAssistantModel(transcript):
             you will make another suggestion; keep doing this until the user says yes or 'y'. \
             If the user says yes or 'y', check if this intent is specific enough for the caregiver to take action; if not, keep following up \
             in the form more specific suggestions, and confirming with the user in the way as mentioned earlier. \
-            At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver."),
+            At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver. \
+            If you have trouble understanding the user's intent, try to ask them if the words you received is \
+            what they are trying to say, e.g. 'Are you trying to say walk?'; if not, make guesses with words with \
+            similar pronunciations."),
 
         ChatMessage.user("walk"),
         ChatMessage.assistant("Do you need help walking to the door?"),
