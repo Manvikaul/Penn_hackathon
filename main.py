@@ -10,23 +10,47 @@ import os
 
 load_dotenv()
 my_key = os.getenv("OPENAI_API_KEY")
-engine = OpenAIEngine(my_key, model="gpt-3.5-turbo")
+engine = OpenAIEngine(my_key, model="gpt-4")
 
 async def cpAssistantModel(transcript):
     fewshot = [
-        ChatMessage.system("You are helping the caregiver of a cerebral palsy patient understand what the cerebral palsy patient is trying to say. You will typically receive under 3 words and will have to form entire sentences in the first person conveying what the input actually means. Remember, the input might be misspelled or the letters might be in the wrong order. ALWAYS respond in FIRST PERSON"),
+        ChatMessage.system("You are helping the caregiver of a cerebral palsy patient understand \
+            what the cerebral palsy patient is trying to say. You will typically receive under 3 words, \
+            and the input maybe misspelt or incomplete. \
+            Based on that input, you will try to understand the user's intention and confirm that with \
+            the user by asking. If the user says 'n', that means your original suggestion is wrong, and \
+            you will make another suggestion; keep doing this until the user says 'y'. \
+            If the user says 'y', rephrase the user's intent in first-person as the message the user wants to tell the caregiver. \
+            Then, check if this intent is specific enough for the caregiver to take action; if not, keep following up \
+            in the form more specific suggestions, and confirming with the user in the way as mentioned earlier. \
+            At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver."),
 
         ChatMessage.user("walk"),
-
-        ChatMessage.assistant("I need help walking to the door"),
+        ChatMessage.assistant("Do you need help walking to the door?"),
+        ChatMessage.user("n"),
+        ChatMessage.assistant("Do you want to go out for a walk?"),
+        ChatMessage.user("y"),
+        ChatMessage.assistant("Would you like to go out for a walk in the park?"),
+        ChatMessage.user("n"),
+        ChatMessage.assistant("Would you like to go out for a walk to the supermarket?"),
+        ChatMessage.user("y"),
+        ChatMessage.assistant("I want to go out for a walk to the supermarket."),
 
         ChatMessage.user("bath"),
-
+        ChatMessage.assistant("Do you need help taking a bath?"),
+        ChatMessage.user("y"),
         ChatMessage.assistant("I need help taking a bath"),
 
-        ChatMessage.user("drink"),
-
-        ChatMessage.assistant("I want something to drink"),
+        ChatMessage.user("drin"),
+        ChatMessage.assistant("Do you want something to drink?"),
+        ChatMessage.user("y"),
+        ChatMessage.assistant("Would you like to drink some water?"),
+        ChatMessage.user("n"),
+        ChatMessage.assistant("Would you like to drink some orange juice?"),
+        ChatMessage.user("n"),
+        ChatMessage.assistant("Would you like to drink some milk?"),
+        ChatMessage.user("y"),
+        ChatMessage.assistant("I want to drink some milk."),
     ]
 
     ai = Kani(engine, chat_history=fewshot)
@@ -41,8 +65,7 @@ async def cpAssistantModel(transcript):
         if counter == 0:
             user_input = transcript
             counter +=1    
-        
-        
+  
         response = await ai.chat_round_str(user_input)
         print("AI:", response)
 
