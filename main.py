@@ -17,9 +17,9 @@ async def cpAssistantModel(transcript):
             what the cerebral palsy patient is trying to say. You will typically receive under 3 words, \
             and the input maybe misspelt or incomplete. \
             Based on that input, you will try to understand the user's intention and confirm that with \
-            the user by asking. If the user says 'n', that means your original suggestion is wrong, and \
-            you will make another suggestion; keep doing this until the user says 'y'. \
-            If the user says 'y', check if this intent is specific enough for the caregiver to take action; if not, keep following up \
+            the user by asking. If the user says no or 'n', that means your original suggestion is wrong, and \
+            you will make another suggestion; keep doing this until the user says yes or 'y'. \
+            If the user says yes or 'y', check if this intent is specific enough for the caregiver to take action; if not, keep following up \
             in the form more specific suggestions, and confirming with the user in the way as mentioned earlier. \
             At the end, rephrase the user's more specific intent in first-person as the message the user wants to tell the caregiver."),
 
@@ -31,12 +31,12 @@ async def cpAssistantModel(transcript):
         ChatMessage.assistant("Would you like to go out for a walk in the park?"),
         ChatMessage.user("n"),
         ChatMessage.assistant("Would you like to go out for a walk to the supermarket?"),
-        ChatMessage.user("y"),
+        ChatMessage.user("yes"),
         ChatMessage.assistant("I want to go out for a walk to the supermarket."),
 
         ChatMessage.user("bath"),
         ChatMessage.assistant("Do you need help taking a bath?"),
-        ChatMessage.user("y"),
+        ChatMessage.user("yeah"),
         ChatMessage.assistant("I need help taking a bath"),
 
         ChatMessage.user("drin"),
@@ -47,7 +47,7 @@ async def cpAssistantModel(transcript):
         ChatMessage.assistant("Would you like to drink some orange juice?"),
         ChatMessage.user("n"),
         ChatMessage.assistant("Would you like to drink some milk?"),
-        ChatMessage.user("y"),
+        ChatMessage.user("ye"),
         ChatMessage.assistant("I want to drink some milk."),
     ]
 
